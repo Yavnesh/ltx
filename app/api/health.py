@@ -24,12 +24,6 @@ def health_check(db: Session = Depends(get_db)):
 
     # 1. Test Database Connection
     try:
-        db.execute(text("SELECT 1"))  # wait, text from sqlalchemy needs import
-    except Exception as e:
-        # Let's import text or use db.connection().execute
-        pass
-    # Let's write standard robust db query:
-    try:
         from sqlalchemy import text
 
         db.execute(text("SELECT 1"))
