@@ -37,7 +37,7 @@ celery_app.conf.update(
         },
         "heartbeat-health-check-every-30-seconds": {
             "task": "app.workers.tasks.health_task",
-            "schedule": 30.0,    # every 30s
+            "schedule": 30.0,  # every 30s
         },
     },
 )

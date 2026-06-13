@@ -34,7 +34,7 @@ class S3StorageProvider(StorageProvider):
             "s3",
             endpoint_url=endpoint_url,
             config=Config(signature_version="s3v4"),
-            **session_args
+            **session_args,
         )
 
         self._ensure_bucket()
@@ -53,7 +53,9 @@ class S3StorageProvider(StorageProvider):
                 else:
                     self.client.create_bucket(
                         Bucket=self.bucket_name,
-                        CreateBucketConfiguration={"LocationConstraint": self.region_name},
+                        CreateBucketConfiguration={
+                            "LocationConstraint": self.region_name
+                        },
                     )
 
                 # Set read-only policy for anonymous access on MinIO
@@ -90,26 +92,42 @@ class S3StorageProvider(StorageProvider):
                 object_name,
                 ExtraArgs={"ContentType": content_type},
             )
-            logger.info("Uploaded file to S3/MinIO", bucket=self.bucket_name, object=object_name)
+            logger.info(
+                "Uploaded file to S3/MinIO", bucket=self.bucket_name, object=object_name
+            )
             return self.get_url(object_name)
         except Exception as e:
-            logger.error("Failed to upload file to S3", object=object_name, error=str(e))
+            logger.error(
+                "Failed to upload file to S3", object=object_name, error=str(e)
+            )
             raise e
 
     def download_file(self, object_name: str, dest_path: str) -> None:
         try:
             self.client.download_file(self.bucket_name, object_name, dest_path)
-            logger.info("Downloaded file from S3/MinIO", bucket=self.bucket_name, object=object_name)
+            logger.info(
+                "Downloaded file from S3/MinIO",
+                bucket=self.bucket_name,
+                object=object_name,
+            )
         except Exception as e:
-            logger.error("Failed to download file from S3", object=object_name, error=str(e))
+            logger.error(
+                "Failed to download file from S3", object=object_name, error=str(e)
+            )
             raise e
 
     def delete_file(self, object_name: str) -> None:
         try:
             self.client.delete_object(Bucket=self.bucket_name, Key=object_name)
-            logger.info("Deleted file from S3/MinIO", bucket=self.bucket_name, object=object_name)
+            logger.info(
+                "Deleted file from S3/MinIO",
+                bucket=self.bucket_name,
+                object=object_name,
+            )
         except Exception as e:
-            logger.error("Failed to delete file from S3", object=object_name, error=str(e))
+            logger.error(
+                "Failed to delete file from S3", object=object_name, error=str(e)
+            )
             raise e
 
     def get_url(self, object_name: str) -> str:

@@ -31,7 +31,9 @@ def generate_video_task(
     fps: int,
     seed: int,
 ) -> str:
-    logger.info("Task generate_video_task started", job_id=job_id, retry=self.request.retries)
+    logger.info(
+        "Task generate_video_task started", job_id=job_id, retry=self.request.retries
+    )
 
     db = SessionLocal()
     job_service = JobService(db)
@@ -42,7 +44,9 @@ def generate_video_task(
     try:
         job_service.transition_status(UUID(job_id), JobStatus.PROCESSING)
     except Exception as e:
-        logger.error("Failed to transition status to PROCESSING", job_id=job_id, error=str(e))
+        logger.error(
+            "Failed to transition status to PROCESSING", job_id=job_id, error=str(e)
+        )
         db.close()
         return f"failed_initial_transition: {str(e)}"
 
@@ -70,11 +74,19 @@ def generate_video_task(
             video_url=video_url,
         )
 
-        logger.info("Video generation and upload completed successfully", job_id=job_id, url=video_url)
+        logger.info(
+            "Video generation and upload completed successfully",
+            job_id=job_id,
+            url=video_url,
+        )
         return video_url
 
     except Exception as exc:
-        logger.error("Exception during video generation task execution", job_id=job_id, error=str(exc))
+        logger.error(
+            "Exception during video generation task execution",
+            job_id=job_id,
+            error=str(exc),
+        )
         # Handle retry flow
         try:
             db.close()
@@ -84,7 +96,7 @@ def generate_video_task(
 
             # Retry task
             # Calculate exponential backoff manually or let celery retry_backoff handle it
-            countdown = int(2 ** self.request.retries) + 5
+            countdown = int(2**self.request.retries) + 5
             raise self.retry(exc=exc, countdown=countdown)
 
         except MaxRetriesExceededError:
@@ -99,7 +111,10 @@ def generate_video_task(
                     failure_reason=f"Failed after max retries. Error: {str(exc)}",
                 )
             except Exception as transition_err:
-                logger.error("Failed to update status to FAILED on max retries", error=str(transition_err))
+                logger.error(
+                    "Failed to update status to FAILED on max retries",
+                    error=str(transition_err),
+                )
             finally:
                 db_fail.close()
 
@@ -123,7 +138,9 @@ def generate_video_task(
 
 @celery_app.task
 def dead_letter_task(job_id: str, error_msg: str) -> None:
-    logger.critical("Job failed permanently and sent to DLQ", job_id=job_id, error=error_msg)
+    logger.critical(
+        "Job failed permanently and sent to DLQ", job_id=job_id, error=error_msg
+    )
 
 
 @celery_app.task
@@ -131,7 +148,10 @@ def cleanup_task() -> str:
     logger.info("Periodic cleanup task running")
     # Clean up any local files in /tmp/ltx_storage older than 24 hours if running in local storage mode
     from app.infrastructure.config import settings
-    if settings.STORAGE_PROVIDER_TYPE == "local" and os.path.exists(settings.STORAGE_LOCAL_PATH):
+
+    if settings.STORAGE_PROVIDER_TYPE == "local" and os.path.exists(
+        settings.STORAGE_LOCAL_PATH
+    ):
         count = 0
         now = time.time()
         for f in os.listdir(settings.STORAGE_LOCAL_PATH):

@@ -4,7 +4,11 @@ from sqlalchemy.orm import Session
 import structlog
 
 from app.api.dependencies import get_current_user, check_rate_limit
-from app.api.schemas import VideoJobCreateSchema, VideoJobListResponseSchema, VideoJobResponseSchema
+from app.api.schemas import (
+    VideoJobCreateSchema,
+    VideoJobListResponseSchema,
+    VideoJobResponseSchema,
+)
 from app.infrastructure.database import get_db
 from app.infrastructure.models import User
 from app.services.job_service import JobService
@@ -14,7 +18,9 @@ router = APIRouter(prefix="/videos", tags=["videos"])
 logger = structlog.get_logger()
 
 
-@router.post("", status_code=status.HTTP_202_ACCEPTED, dependencies=[Depends(check_rate_limit)])
+@router.post(
+    "", status_code=status.HTTP_202_ACCEPTED, dependencies=[Depends(check_rate_limit)]
+)
 def create_video_job(
     payload: VideoJobCreateSchema,
     current_user: User = Depends(get_current_user),
@@ -87,7 +93,13 @@ def list_video_jobs(
     job_service = JobService(db)
 
     # Check allowed sort columns to prevent SQL injection
-    allowed_sort_fields = {"created_at", "started_at", "completed_at", "status", "duration"}
+    allowed_sort_fields = {
+        "created_at",
+        "started_at",
+        "completed_at",
+        "status",
+        "duration",
+    }
     if sort_by not in allowed_sort_fields:
         sort_by = "created_at"
 

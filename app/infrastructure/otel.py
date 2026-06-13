@@ -15,7 +15,11 @@ def init_tracer():
         logger.info("OpenTelemetry tracing is disabled.")
         return
 
-    logger.info("Initializing OpenTelemetry tracer", service_name=settings.OTEL_SERVICE_NAME, endpoint=settings.OTEL_EXPORTER_OTLP_ENDPOINT)
+    logger.info(
+        "Initializing OpenTelemetry tracer",
+        service_name=settings.OTEL_SERVICE_NAME,
+        endpoint=settings.OTEL_EXPORTER_OTLP_ENDPOINT,
+    )
 
     # Define Resource
     resource = Resource.create(
@@ -41,10 +45,13 @@ def instrument_fastapi_app(app):
         return
     try:
         from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
         FastAPIInstrumentor.instrument_app(app)
         logger.info("FastAPI app instrumented with OpenTelemetry")
     except Exception as e:
-        logger.error("Failed to instrument FastAPI app with OpenTelemetry", error=str(e))
+        logger.error(
+            "Failed to instrument FastAPI app with OpenTelemetry", error=str(e)
+        )
 
 
 def instrument_celery_worker():
@@ -52,7 +59,10 @@ def instrument_celery_worker():
         return
     try:
         from opentelemetry.instrumentation.celery import CeleryInstrumentor
+
         CeleryInstrumentor().instrument()
         logger.info("Celery worker instrumented with OpenTelemetry")
     except Exception as e:
-        logger.error("Failed to instrument Celery worker with OpenTelemetry", error=str(e))
+        logger.error(
+            "Failed to instrument Celery worker with OpenTelemetry", error=str(e)
+        )

@@ -6,7 +6,9 @@ from typing import Literal
 
 class UserRegisterSchema(BaseModel):
     email: EmailStr
-    password: str = Field(..., min_length=6, description="Password must be at least 6 characters")
+    password: str = Field(
+        ..., min_length=6, description="Password must be at least 6 characters"
+    )
 
 
 class UserLoginSchema(BaseModel):
@@ -20,11 +22,17 @@ class TokenSchema(BaseModel):
 
 
 class VideoJobCreateSchema(BaseModel):
-    prompt: str = Field(..., max_length=1000, description="Text prompt describing the video to generate")
+    prompt: str = Field(
+        ..., max_length=1000, description="Text prompt describing the video to generate"
+    )
     duration: int = Field(5, ge=1, le=30, description="Video duration in seconds")
-    resolution: Literal["360p", "480p", "720p"] = Field("720p", description="Video resolution")
+    resolution: Literal["360p", "480p", "720p"] = Field(
+        "720p", description="Video resolution"
+    )
     fps: int = Field(24, ge=8, le=30, description="Frames per second")
-    seed: int = Field(123, ge=0, description="Random seed for video generator reproducibility")
+    seed: int = Field(
+        123, ge=0, description="Random seed for video generator reproducibility"
+    )
 
 
 class VideoJobResponseSchema(BaseModel):

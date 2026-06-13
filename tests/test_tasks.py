@@ -33,7 +33,13 @@ def test_user_and_job(db_session):
 @patch("app.workers.tasks.get_video_generator")
 @patch("app.workers.tasks.StorageService")
 @patch("app.workers.tasks.SessionLocal")
-def test_generate_video_task_success(mock_session_local, mock_storage_service, mock_get_gen, test_user_and_job, db_session):
+def test_generate_video_task_success(
+    mock_session_local,
+    mock_storage_service,
+    mock_get_gen,
+    test_user_and_job,
+    db_session,
+):
     user, job = test_user_and_job
 
     # Set up DB session mocks
@@ -46,7 +52,9 @@ def test_generate_video_task_success(mock_session_local, mock_storage_service, m
 
     # Set up storage upload mock
     mock_storage = MagicMock()
-    mock_storage.upload_video.return_value = "https://s3.amazonaws.com/test-bucket/videos/test-job.mp4"
+    mock_storage.upload_video.return_value = (
+        "https://s3.amazonaws.com/test-bucket/videos/test-job.mp4"
+    )
     mock_storage_service.return_value = mock_storage
 
     job_uuid = job.id

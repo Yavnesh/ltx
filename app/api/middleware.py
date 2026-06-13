@@ -2,7 +2,13 @@ import time
 import uuid
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
-from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import (
+    Counter,
+    Histogram,
+    Gauge,
+    generate_latest,
+    CONTENT_TYPE_LATEST,
+)
 import structlog
 import redis
 
@@ -15,30 +21,24 @@ logger = structlog.get_logger()
 HTTP_REQUEST_COUNT = Counter(
     "http_requests_total",
     "Total number of HTTP requests.",
-    ["method", "endpoint", "status"]
+    ["method", "endpoint", "status"],
 )
 
 HTTP_REQUEST_LATENCY = Histogram(
     "http_request_duration_seconds",
     "HTTP request latency in seconds.",
-    ["method", "endpoint"]
+    ["method", "endpoint"],
 )
 
 CELERY_QUEUE_SIZE = Gauge(
-    "celery_queue_size",
-    "Current number of tasks in the Celery queue.",
-    ["queue_name"]
+    "celery_queue_size", "Current number of tasks in the Celery queue.", ["queue_name"]
 )
 
 CELERY_ACTIVE_WORKERS = Gauge(
-    "celery_active_workers_count",
-    "Number of active Celery workers."
+    "celery_active_workers_count", "Number of active Celery workers."
 )
 
-GPU_UTILIZATION = Gauge(
-    "gpu_utilization_ratio",
-    "Mock or real GPU utilization ratio."
-)
+GPU_UTILIZATION = Gauge("gpu_utilization_ratio", "Mock or real GPU utilization ratio.")
 
 
 class LoggingAndMetricsMiddleware(BaseHTTPMiddleware):
@@ -70,14 +70,11 @@ class LoggingAndMetricsMiddleware(BaseHTTPMiddleware):
 
             # Record Prometheus Metrics
             HTTP_REQUEST_COUNT.labels(
-                method=request.method,
-                endpoint=endpoint,
-                status=response.status_code
+                method=request.method, endpoint=endpoint, status=response.status_code
             ).inc()
 
             HTTP_REQUEST_LATENCY.labels(
-                method=request.method,
-                endpoint=endpoint
+                method=request.method, endpoint=endpoint
             ).observe(duration_s)
 
             # Structured Log output as requested
@@ -123,6 +120,7 @@ def update_system_metrics():
     # 3. Update GPU utilization (Mock or read via nvidia-smi if available)
     try:
         import torch
+
         if torch.cuda.is_available():
             # Real GPU utilization approximation (memory used ratio)
             device = torch.cuda.current_device()

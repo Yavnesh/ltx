@@ -34,6 +34,9 @@ def test_login_invalid_credentials(client):
     client.post("/v1/auth/register", json=payload)
 
     # Wrong password
-    response = client.post("/v1/auth/token", json={"email": "user@example.com", "password": "wrongpassword"})
+    response = client.post(
+        "/v1/auth/token",
+        json={"email": "user@example.com", "password": "wrongpassword"},
+    )
     assert response.status_code == 401
     assert "Incorrect email or password" in response.json()["detail"]

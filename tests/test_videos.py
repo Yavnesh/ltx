@@ -8,7 +8,7 @@ def test_create_video_job_unauthorized(client):
         "duration": 5,
         "resolution": "720p",
         "fps": 24,
-        "seed": 123
+        "seed": 123,
     }
     response = client.post("/v1/videos", json=payload)
     assert response.status_code == 403
@@ -21,7 +21,7 @@ def test_create_video_job_success(mock_trigger, client, auth_headers):
         "duration": 5,
         "resolution": "720p",
         "fps": 24,
-        "seed": 123
+        "seed": 123,
     }
     response = client.post("/v1/videos", json=payload, headers=auth_headers)
     assert response.status_code == 202
@@ -44,7 +44,7 @@ def test_get_video_job_status(mock_trigger, client, auth_headers):
         "duration": 10,
         "resolution": "720p",
         "fps": 24,
-        "seed": 42
+        "seed": 42,
     }
     create_resp = client.post("/v1/videos", json=payload, headers=auth_headers)
     job_id = create_resp.json()["job_id"]
@@ -60,8 +60,16 @@ def test_get_video_job_status(mock_trigger, client, auth_headers):
 @patch("app.services.video_service.VideoService.trigger_generation")
 def test_list_video_jobs(mock_trigger, client, auth_headers):
     # Create two jobs
-    client.post("/v1/videos", json={"prompt": "prompt 1", "duration": 5, "seed": 1}, headers=auth_headers)
-    client.post("/v1/videos", json={"prompt": "prompt 2", "duration": 10, "seed": 2}, headers=auth_headers)
+    client.post(
+        "/v1/videos",
+        json={"prompt": "prompt 1", "duration": 5, "seed": 1},
+        headers=auth_headers,
+    )
+    client.post(
+        "/v1/videos",
+        json={"prompt": "prompt 2", "duration": 10, "seed": 2},
+        headers=auth_headers,
+    )
 
     response = client.get("/v1/videos", headers=auth_headers)
     assert response.status_code == 200
@@ -72,7 +80,11 @@ def test_list_video_jobs(mock_trigger, client, auth_headers):
 
 @patch("app.services.video_service.VideoService.trigger_generation")
 def test_delete_video_job(mock_trigger, client, auth_headers):
-    create_resp = client.post("/v1/videos", json={"prompt": "to delete", "duration": 5, "seed": 1}, headers=auth_headers)
+    create_resp = client.post(
+        "/v1/videos",
+        json={"prompt": "to delete", "duration": 5, "seed": 1},
+        headers=auth_headers,
+    )
     job_id = create_resp.json()["job_id"]
 
     # Delete job

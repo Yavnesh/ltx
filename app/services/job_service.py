@@ -97,7 +97,10 @@ class JobService:
             return False
 
         # If job is running, we cancel it, or clean up any associated storage files
-        if job.status == JobStatus.QUEUED.value or job.status == JobStatus.PROCESSING.value:
+        if (
+            job.status == JobStatus.QUEUED.value
+            or job.status == JobStatus.PROCESSING.value
+        ):
             # Enforce CANCELLED status transition if deleting a running/queued job
             try:
                 self.transition_status(job_id, JobStatus.CANCELLED)

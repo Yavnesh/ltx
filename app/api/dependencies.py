@@ -74,7 +74,11 @@ def check_rate_limit(user: User = Depends(get_current_user)) -> None:
 
         # Enforce rate limit (100 requests / hour)
         if request_count > 100:
-            logger.warning("Rate limit exceeded for user", user_id=str(user.id), count=request_count)
+            logger.warning(
+                "Rate limit exceeded for user",
+                user_id=str(user.id),
+                count=request_count,
+            )
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail="Rate limit exceeded. Maximum 100 requests per hour.",

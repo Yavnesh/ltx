@@ -13,7 +13,9 @@ class JobRepository:
         return self.db.query(Job).filter(Job.id == job_id).first()
 
     def get_by_id_and_user(self, job_id: UUID, user_id: UUID) -> Job | None:
-        return self.db.query(Job).filter(Job.id == job_id, Job.user_id == user_id).first()
+        return (
+            self.db.query(Job).filter(Job.id == job_id, Job.user_id == user_id).first()
+        )
 
     def create(
         self,
@@ -108,7 +110,9 @@ class JobRepository:
 
         return items, total
 
-    def create_event(self, job_id: UUID, event_type: str, payload: dict | None = None) -> JobEvent:
+    def create_event(
+        self, job_id: UUID, event_type: str, payload: dict | None = None
+    ) -> JobEvent:
         event = JobEvent(
             job_id=job_id,
             event_type=event_type,

@@ -37,11 +37,10 @@ instrument_fastapi_app(app)
 # 7. Mount static file serving for local storage provider
 if settings.STORAGE_PROVIDER_TYPE.lower() == "local":
     import os
+
     os.makedirs(settings.STORAGE_LOCAL_PATH, exist_ok=True)
     app.mount(
-        "/static",
-        StaticFiles(directory=settings.STORAGE_LOCAL_PATH),
-        name="static"
+        "/static", StaticFiles(directory=settings.STORAGE_LOCAL_PATH), name="static"
     )
 
 
@@ -49,7 +48,4 @@ if settings.STORAGE_PROVIDER_TYPE.lower() == "local":
 def get_metrics():
     """Endpoint scraped by Prometheus to retrieve system metrics."""
     update_system_metrics()
-    return Response(
-        content=generate_latest(),
-        media_type=CONTENT_TYPE_LATEST
-    )
+    return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)

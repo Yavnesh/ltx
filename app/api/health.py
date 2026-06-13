@@ -30,6 +30,7 @@ def health_check(db: Session = Depends(get_db)):
     # Let's write standard robust db query:
     try:
         from sqlalchemy import text
+
         db.execute(text("SELECT 1"))
     except Exception as e:
         logger.error("Healthcheck database failure", error=str(e))

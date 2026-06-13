@@ -23,7 +23,9 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    updated_at = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
 
     jobs = relationship("Job", back_populates="user", cascade="all, delete-orphan")
 
@@ -32,7 +34,9 @@ class Job(Base):
     __tablename__ = "jobs"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     prompt = Column(Text, nullable=False)
     status = Column(String, default=JobStatus.QUEUED.value, nullable=False)
     seed = Column(Integer, nullable=False)
@@ -45,14 +49,18 @@ class Job(Base):
     video_url = Column(String, nullable=True)
 
     user = relationship("User", back_populates="jobs")
-    events = relationship("JobEvent", back_populates="job", cascade="all, delete-orphan")
+    events = relationship(
+        "JobEvent", back_populates="job", cascade="all, delete-orphan"
+    )
 
 
 class JobEvent(Base):
     __tablename__ = "job_events"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    job_id = Column(UUID(as_uuid=True), ForeignKey("jobs.id", ondelete="CASCADE"), nullable=False)
+    job_id = Column(
+        UUID(as_uuid=True), ForeignKey("jobs.id", ondelete="CASCADE"), nullable=False
+    )
     event_type = Column(String, nullable=False)
     payload = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
