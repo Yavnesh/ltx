@@ -1,7 +1,7 @@
 from app.infrastructure.config import settings
 from app.infrastructure.generators.base import VideoGenerator
-from app.infrastructure.generators.mock import MockGenerator
 from app.infrastructure.generators.ltx import LTXGenerator
+from app.infrastructure.generators.mock import MockGenerator
 
 
 def get_video_generator() -> VideoGenerator:

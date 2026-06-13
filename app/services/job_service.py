@@ -1,6 +1,7 @@
 from uuid import UUID
-from sqlalchemy.orm import Session
+
 import structlog
+from sqlalchemy.orm import Session
 
 from app.infrastructure.models import Job, JobStatus
 from app.repositories.job_repository import JobRepository

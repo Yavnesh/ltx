@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Response
 from fastapi.staticfiles import StaticFiles
-from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 from app.api import health
-from app.api.v1 import auth, videos
 from app.api.middleware import LoggingAndMetricsMiddleware, update_system_metrics
+from app.api.v1 import auth, videos
 from app.infrastructure.config import settings
 from app.infrastructure.logging import configure_logging
 from app.infrastructure.otel import init_tracer, instrument_fastapi_app

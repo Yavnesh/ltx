@@ -1,7 +1,9 @@
 from datetime import datetime
 from uuid import UUID
-from sqlalchemy import desc, asc
+
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
+
 from app.infrastructure.models import Job, JobEvent, JobStatus
 
 

@@ -1,8 +1,9 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+
 import redis
 import structlog
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
 from app.infrastructure.config import settings
 from app.infrastructure.database import get_db

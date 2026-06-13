@@ -1,9 +1,10 @@
 from uuid import UUID
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session
-import structlog
 
-from app.api.dependencies import get_current_user, check_rate_limit
+import structlog
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.orm import Session
+
+from app.api.dependencies import check_rate_limit, get_current_user
 from app.api.schemas import (
     VideoJobCreateSchema,
     VideoJobListResponseSchema,

@@ -1,5 +1,6 @@
 from celery import Celery
-from kombu import Queue, Exchange
+from kombu import Exchange, Queue
+
 from app.infrastructure.config import settings
 
 # Initialize Celery app

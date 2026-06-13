@@ -1,16 +1,17 @@
 import os
-from uuid import UUID
 import time
 from datetime import datetime
-from celery.exceptions import MaxRetriesExceededError
-import structlog
+from uuid import UUID
 
-from app.workers.celery_app import celery_app
+import structlog
+from celery.exceptions import MaxRetriesExceededError
+
 from app.infrastructure.database import SessionLocal
-from app.infrastructure.models import JobStatus
 from app.infrastructure.generators import get_video_generator
+from app.infrastructure.models import JobStatus
 from app.services.job_service import JobService
 from app.services.storage_service import StorageService
+from app.workers.celery_app import celery_app
 
 logger = structlog.get_logger()
 
@@ -168,6 +169,7 @@ def cleanup_task() -> str:
 def health_task() -> str:
     # Heartbeat task writes status to Redis to prove Celery worker is active
     import redis
+
     from app.infrastructure.config import settings
 
     r = redis.Redis.from_url(settings.REDIS_URL)

@@ -1,4 +1,5 @@
 import structlog
+
 from app.infrastructure.generators.base import VideoGenerator
 
 logger = structlog.get_logger()

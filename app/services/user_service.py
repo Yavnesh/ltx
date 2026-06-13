@@ -1,8 +1,8 @@
-from sqlalchemy.orm import Session
 import structlog
+from sqlalchemy.orm import Session
 
+from app.infrastructure.security import create_access_token, verify_password
 from app.repositories.user_repository import UserRepository
-from app.infrastructure.security import verify_password, create_access_token
 
 logger = structlog.get_logger()
 

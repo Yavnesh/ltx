@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from typing import Any
-import jwt
+
 import bcrypt
+import jwt
 import structlog
 
 from app.infrastructure.config import settings

@@ -1,8 +1,9 @@
 import json
+
 import boto3
+import structlog
 from botocore.client import Config
 from botocore.exceptions import ClientError
-import structlog
 
 from app.infrastructure.storage.base import StorageProvider
 

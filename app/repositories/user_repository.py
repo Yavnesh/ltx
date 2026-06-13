@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+
 from app.infrastructure.models import User
 from app.infrastructure.security import get_password_hash
 

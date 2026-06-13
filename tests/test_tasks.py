@@ -1,6 +1,7 @@
-from unittest.mock import patch, MagicMock
-import pytest
+from unittest.mock import MagicMock, patch
 from uuid import uuid4
+
+import pytest
 
 from app.infrastructure.models import Job, JobStatus, User
 from app.workers.tasks import generate_video_task

@@ -1,6 +1,7 @@
 import os
 import shutil
 from pathlib import Path
+
 import structlog
 
 from app.infrastructure.storage.base import StorageProvider
