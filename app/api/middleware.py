@@ -96,8 +96,8 @@ def update_system_metrics():
         # Redis lists length for the 'default' queue
         q_len = r.llen("default")
         CELERY_QUEUE_SIZE.labels(queue_name="default").set(q_len)
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Failed to retrieve Celery queue size", error=str(e))
 
     # 2. Update active workers (mock worker count or fetch from redis heartbeat)
     try:
@@ -109,8 +109,8 @@ def update_system_metrics():
             CELERY_ACTIVE_WORKERS.set(1)
         else:
             CELERY_ACTIVE_WORKERS.set(0)
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Failed to retrieve Celery active workers status", error=str(e))
 
     # 3. Update GPU utilization (Mock or read via nvidia-smi if available)
     try:

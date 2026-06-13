@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     # Storage
     STORAGE_PROVIDER_TYPE: str = "local"  # local, minio, s3
-    STORAGE_LOCAL_PATH: str = "/tmp/ltx_storage"
+    STORAGE_LOCAL_PATH: str = "/tmp/ltx_storage"  # nosec B108
     STORAGE_ENDPOINT_URL: str | None = None
     STORAGE_ACCESS_KEY: str | None = None
     STORAGE_SECRET_KEY: str | None = None

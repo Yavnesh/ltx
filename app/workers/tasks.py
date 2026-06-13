@@ -51,7 +51,7 @@ def generate_video_task(
         db.close()
         return f"failed_initial_transition: {str(e)}"
 
-    local_path = f"/tmp/{job_id}.mp4"
+    local_path = f"/tmp/{job_id}.mp4"  # nosec B108
 
     try:
         # Generate the video

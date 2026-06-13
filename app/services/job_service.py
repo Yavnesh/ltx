@@ -105,7 +105,11 @@ class JobService:
             # Enforce CANCELLED status transition if deleting a running/queued job
             try:
                 self.transition_status(job_id, JobStatus.CANCELLED)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(
+                    "Failed to transition job to CANCELLED on delete",
+                    job_id=str(job_id),
+                    error=str(e),
+                )
 
         return self.job_repo.delete(job_id)

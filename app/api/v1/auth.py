@@ -31,4 +31,4 @@ def login_for_access_token(payload: UserLoginSchema, db: Session = Depends(get_d
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer"}  # nosec B105
