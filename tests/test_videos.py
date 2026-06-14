@@ -11,7 +11,7 @@ def test_create_video_job_unauthorized(client):
         "seed": 123,
     }
     response = client.post("/v1/videos", json=payload)
-    assert response.status_code == 403
+    assert response.status_code == 401
 
 
 @patch("app.services.video_service.VideoService.trigger_generation")
